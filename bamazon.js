@@ -39,10 +39,6 @@ function mainShop() {
 
 }
 
-
-//do until ready = false
-//Insquire do you want to keep buying? If no then ready = false
-
 function purchase() {
     inquirer.prompt([{
             type: 'input',
@@ -93,9 +89,7 @@ function purchase() {
         } else {
             console.log('Thank you for shopping')
             console.log(purArr.toString())
-            // for (var i = 0; i < purArr.length; i++) {
-            // console.log(purArr[i])
-            // }
+            connection.end()
         }
     })
 }
