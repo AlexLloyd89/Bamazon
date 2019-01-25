@@ -74,22 +74,37 @@ function purchase() {
         }
     ]).then(function (input) {
         var query = `Update products set stock_quantity = stock_quantity - ${input.quantity} WHERE id = ${input.product}`;
-        connection.query(query, function (err, res) {})
-        return input
-    }).then(input => {
-        var out = `SELECT product_name from products WHERE id = ${input.product}`
-        connection.query(out, function (err, res) {
-            purArr.push(`You purchased ${input.quantity} ${res[0].product_name} \n`);
+        connection.query(query, function (err, res) {
+            var out = `SELECT product_name from products WHERE id = ${input.product}`
+            connection.query(out, function (err, res) {
+                purArr.push(`You purchased ${input.quantity} ${res[0].product_name} \n`);
+                // console.log(purArr.toString())
+            })
+
+            if (input.continue === 'Yes') {
+                purchase();
+            } else {
+                console.log('Thank you for shopping')
+                console.log(purArr.toString())
+                connection.end()
+            }
+
+            return input
         })
-        // console.log(purArr.toString())
-        return input
-    }).then(input => {
-        if (input.continue === 'Yes') {
-            purchase();
-        } else {
-            console.log('Thank you for shopping')
-            console.log(purArr.toString())
-            connection.end()
-        }
+        // }).then(input => {
+        //     // var out = `SELECT product_name from products WHERE id = ${input.product}`
+        //     // connection.query(out, function (err, res) {
+        //     //     purArr.push(`You purchased ${input.quantity} ${res[0].product_name} \n`);
+        //     // })
+        //     // // console.log(purArr.toString())
+        //     // return input
+        // }).then(input => {
+        //     if (input.continue === 'Yes') {
+        //         purchase();
+        //     } else {
+        //         console.log('Thank you for shopping')
+        //         console.log(purArr.toString())
+        //         connection.end()
+        //     }
     })
 }
